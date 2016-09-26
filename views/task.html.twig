@@ -4,12 +4,12 @@
 </head>
 <body>
     <h1>{{ task.getDescription }}</h1>
-    <h1>{{ task.getDueDate }}</h1>
-    {{ task.getComplete }}
-    {% if task.getComplete == true %}
-        <h1>Complete</h1>
-    {% else %}
-        <h1>Incomplete</h1>
+    <h3>Task Due: {{ task.getDueDate }}</h3>
+    {% if task.getComplete == 1 %}
+        <h3>Task Complete</h3>
+    {% endif %}
+    {% if task.getComplete == 0 %}
+        <h3>Task Incomplete</h3>
     {% endif %}
 
 
@@ -46,8 +46,8 @@
         <input type="text" name="new_due_date" value="{{ task.getDueDate }}" required>
         <label for="new_complete">Complete?</label>
         <select name="new_complete">
-            <option value="false">No</option>
-            <option value="true">Yes</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
         </select>
         <button type="submit" name="button">Edit</button>
     </form>
