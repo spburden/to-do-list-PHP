@@ -4,12 +4,24 @@
         private $description;
         private $id;
         private $due_date;
+        private $complete;
 
-        function __construct($description, $due_date, $id = null)
+        function __construct($description, $due_date, $id = null, $complete = false)
         {
             $this->description = $description;
             $this->id = $id;
             $this->due_date = $due_date;
+            $this->complete = $complete;
+        }
+
+        function setComplete()
+        {
+            $this->complete = true;
+        }
+
+        function getComplete()
+        {
+            return $this->complete;
         }
 
         function setDueDate($new_due_date)
@@ -75,15 +87,23 @@
             return $found_task;
         }
 
-        function update($new_description)
+        function update($new_description, $new_complete)
         {
-            $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}' WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}', complete = $new_complete WHERE id = {$this->getId()};");
             $this->setDescription($new_description);
+            $this->setComplete();
         }
+        //
+        // function updateComplete($new_description)
+        // {
+        //     $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}' WHERE id = {$this->getId()};");
+        //     $this->setDescription($new_description);
+        // }
 
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM tasks WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("DELETE FROM categories_tasks WHERE task_id = {$this->getId()};");
         }
 
         function addCategory($category)
