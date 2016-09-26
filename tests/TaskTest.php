@@ -95,7 +95,7 @@
             $test_task = new Task($description, $due_date);
 
             //Act
-            $test_task->setComplete();
+            $test_task->setComplete(true);
             $result = $test_task->getComplete();
 
             //Assert
@@ -241,9 +241,10 @@
 
             $new_description = "Clean the dog";
             $new_complete = false;
+            $new_due_date = "12/19/2018";
 
             //Act
-            $test_task->update($new_description, $new_complete);
+            $test_task->update($new_description, $new_due_date, $new_complete);
 
             //Assert
             $this->assertEquals("Clean the dog", $test_task->getDescription());
@@ -260,13 +261,36 @@
 
             $new_complete = true;
             $new_description = "Clean the dog";
+            $new_due_date = "12/19/2018";
 
             //Act
-            $test_task->update($new_description, $new_complete);
+            $test_task->update($new_description, $new_due_date, $new_complete);
 
             //Assert
             $this->assertEquals(true, $test_task->getComplete());
         }
+
+        function testUpdateDueDate()
+        {
+            //Arrange
+            $description = "Wash the dog";
+            $id = 1;
+            $due_date = "11/11/2011";
+            $test_task = new Task($description, $id, $due_date);
+            $test_task->save();
+
+            $new_complete = true;
+            $new_description = "Clean the dog";
+            $new_due_date = "12/19/2018";
+
+            //Act
+            $test_task->update($new_description, $new_due_date, $new_complete);
+
+            //Assert
+            $this->assertEquals("12/19/2018", $test_task->getDueDate());
+        }
+
+
 
         function testDeleteTask()
         {

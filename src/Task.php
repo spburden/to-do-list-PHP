@@ -14,9 +14,9 @@
             $this->complete = $complete;
         }
 
-        function setComplete()
+        function setComplete($new_complete)
         {
-            $this->complete = true;
+            $this->complete = $new_complete;
         }
 
         function getComplete()
@@ -87,18 +87,13 @@
             return $found_task;
         }
 
-        function update($new_description, $new_complete)
+        function update($new_description, $new_due_date, $new_complete)
         {
-            $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}', complete = $new_complete WHERE id = {$this->getId()};");
+            $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}', complete = $new_complete, due_date = $new_due_date WHERE id = {$this->getId()};");
             $this->setDescription($new_description);
-            $this->setComplete();
+            $this->setComplete($new_complete);
+            $this->setDueDate($new_due_date);
         }
-        //
-        // function updateComplete($new_description)
-        // {
-        //     $GLOBALS['DB']->exec("UPDATE tasks SET description = '{$new_description}' WHERE id = {$this->getId()};");
-        //     $this->setDescription($new_description);
-        // }
 
         function delete()
         {

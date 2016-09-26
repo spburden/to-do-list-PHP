@@ -6,6 +6,8 @@
 
     //Add symfony debug component and turn it on.
     use Symfony\Component\Debug\Debug;
+    use Symfony\Component\HttpFoundation\Request;
+    Request::enableHttpMethodParameterOverride();
     Debug::enable();
 
     // Initialize application
@@ -77,10 +79,19 @@
         $task->addCategory($category);
         return $app['twig']->render('task.html.twig', array('task' => $task, 'tasks' => Task::getAll(), 'categories' => $task->getCategories(), 'all_categories' => Category::getAll()));
     });
-    
+
     $app->post("/delete_categories", function() use ($app) {
         Category::deleteAll();
         return $app['twig']->render('index.html.twig');
+    });
+
+    $app->patch("/tasks/{id}", function($id) use ($app) {
+        $new_description = $_POST['new_description'];
+        $new_due_date = $_POST['new_due_date'];
+        $new_complete = $_POST['new_complete'];
+        $task = Task::find($id);
+        $task->update($new_description, $new_due_date, $new_complete);
+        return $app['twig']->render('task.html.twig', array('task' => $task, 'categories' => $task->getCategories(), 'all_categories' => Category::getAll()));
     });
 
     return $app;
